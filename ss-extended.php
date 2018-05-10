@@ -390,7 +390,7 @@ if(isset($_GET["ureset"])) {
 		#label 		{color: blue;}
 		#url 			{width: 160px;}
 		#tags 		{width: 100px;}
-		#submitButton 	{float: right; margin-right: 15px;}
+		#submitButton 	{float: right; margin-right: 20px;}
 		#tag 		{width: 100px;}
 		table td {
 			/* border: 1px solid black; /* Style just to show the table cell boundaries */
@@ -426,6 +426,31 @@ if(isset($_GET["ureset"])) {
 			margin-top: 0px;
 			margin-bottom: 0px;
 			background-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAIAAACjcKk8AAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKmSURBVEhLjZW7S7JRHMd9nQwSJxeHVlNoCHEQFCQRXLyA0GBLi4M6CE5p6JguJjToGLS4FP4BLu4GGeQSappdJG95v+f79T1wfHx89O1MD+d8P+d3P8+ffD7P41oCgaBSqfj9/slk4vP5ZDJZr9djCwGvr5d/iylNp9OlUoml5HHCn5+fFxcXTNjpdH59ff0KLpfLiUSCCV9dXX18fPwKhqjT6dhsNsJrNJput7vuI7fbCA9q+JnL5b6/v3ERZ3RsGHlqt9uPj4/7+/vErFKpBF8oFP5juVarVatVi8XCKolOp8ON22Acn5+fc9Ycm9lsdmOpGo2G3W7fRGJfq9WuR76IGXGiDIQUCoXBYJDzlnXjCxj5sFqtBHh4eAgEApzw0dHReDxGC9Dk8YrFIupB1AcHB/P5XKFQMGE+n39yckJ2QqFQMpmEMfT5wllEi3jI2f39/c/PD8vs4eEhCs7axNjc3NzwkGSRSIQztVo9HA4zmQxLh66ezWZut5u1L5FIFm4/PT2dnZ3BDcxgLBZjia6vr1F/GB+NRs/PzzDocrngzt3d3SJh4IEhDegQh8Oxni3c/v7+TpT4gKzZbL69va20JzKhUqk4Uw0S6m1T1e/3d3Z2CGw0GuEb8yLYfH19ZfJLy3Ablqna4/GgbGKxmMmT6Ci/hHFrKpWiUuQJUrTk7u4u3QyHw8wnYQnj6YlGo1SHqcQkYCE36FmyH4lEIOOwPJ1OpVIphQeDAREhluPj420waogMUTIej1P36vW62WzeCLdaLeYweL1e5uhvg9E6t7e31KbBYMDoMOuxDUZiKLm3t4f/A6sTtsFyuZzC8B8PwzpsMpmI5vLyciXb9AAMq4HILZgK+lSglit1RhkxKOgbPBGcjzP5b+n1+tPTUww/U/MX1+DfrIbEVCgAAAAASUVORK5CYII=');
+		}
+		.btn:hover {
+			background: #800000;
+			text-decoration: none;
+		}
+
+		.btn {
+    			border: 1px solid transparent;
+    			background: #0000A0;
+			color: #fff;
+    			font: .875rem Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
+    			font-weight: 300;   
+    			padding: 0 20px;
+			text-align: center;
+			touch-action: manipulation;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			vertical-align: middle;
+			white-space: nowrap;
+			font-size: .813rem;
+			letter-spacing: .013rem;
+			line-height: 1.813rem;
+			border-radius: 2rem;
 		}
 	</style>
 	<script type="text/javascript">
@@ -484,7 +509,8 @@ echo '		<label style="margin-left: 10px">View&nbsp;Tag:&nbsp;</label><select nam
 				echo "\t\t";
 			
 echo '</select>' . "\n";
-echo '		<input type="submit" name="menu_1" id="submitButton" value="Go to Menu" />' . "\n";
+echo '          <font style="color: #ffffff;line-height: 1.813rem">&nbsp;</font>';
+echo '		<input type="submit" name="menu_1" class="btn" id="submitButton" value="Go to Menu" />' . "\n";
 echo '	</form>';
 	
 		echo "\n";
