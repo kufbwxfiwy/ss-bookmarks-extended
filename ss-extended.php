@@ -762,7 +762,7 @@ echo <<<END
 										</tr>
 										<tr>
 											<td class="tinput">
-												<input type="submit" value="Delete Everything" name="delete"><br><font style="FONT-WEIGHT: bold; COLOR: red">⚠Use this button with caution!</font>
+												<input type="submit" value="Delete Everything" name="delete"><br><font style="FONT-WEIGHT: bold; COLOR: red">&#9888;Use this button with caution!</font>
 											</td>
 										</tr>
 									</table>
