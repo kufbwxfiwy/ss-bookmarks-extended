@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="ss_bookmarks.css"/>
+</head>
+
+<body>
+
+<label>Open a new tab and navigate to where your<br><strong>SS Bookmarks - Extended</strong>&nbsp;&nbsp;website&nbsp;is&nbsp;&nbsp;at,<br>then&nbsp;press&nbsp;the&nbsp;<strong>Set</strong>&nbsp;button. You only need to<br>do this once.</label>
+
+<div>
+  <form>
+    <input type="text" id="loctxt" style="WIDTH: 210px" name="removeurl">
+    <input type="submit" style="MARGIN-TOP: 4px" value=" Set " name="removelist">
+  </form>
+</div>
+
+<hr>
+
+<div>
+  <label><strong>Downloading:</strong></label><label id="warning" style="margin-right: 32px; float: right; color: red; display: none"> - No Connection - </label>
+  <br>
+  <label style="line-height: 1.813rem">Download the following tag into Bookmarks:</label>
+  <br>
+  <select name="tag" id="tag" style="margin-left: 5px; width: 100px">
+  </select>
+  <button type="submit" style="margin-right: 10px; float: right" id="downloadBtn">Download</button>
+</div>
+
+<hr>
+
+<div>
+  <label><strong>Uploading:</strong></label><label id="uwarning" style="margin-right: 32px; float: right; color: red; display: none"> - No Connection - </label>
+  <br>
+  <label style="line-height: 1.813rem">Upload all bookmarks into the following tag:</label>
+  <br>
+  <input type="text" id="utext" style="margin-left: 5px; width: 100px" name="uploadbookmarks">(Give tag)
+  <button type="submit" style="margin-right: 10px; float: right" id="uploadBtn"> Upload </button>
+</div>
+
+<div class="lighter">
+<hr>
+  <label><strong>Single Page:</strong></label><label id="suwarning" style="margin-right: 32px; float: right; color: red; display: none"> - No Connection - </label>
+  <br>
+  <label style="line-height: 1.813rem">Upload the current page to the following tag:</label>
+  <br>
+  <select name="tag_" id="tag_" style="margin-left: 5px; margin-top: 2px; width: 100px">
+  </select>
+  <button type="submit" style="margin-right: 10px; float: right" id="suploadBtn"> Upload </button>
+<hr>
+</div>
+
+<div id="params"></div>
+
+<script src="ssbme.js"></script>
+</body>
+
+</html>
