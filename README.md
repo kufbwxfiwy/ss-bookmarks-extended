@@ -10,3 +10,13 @@ Important points when using this script:
 3. Duplicate links will be eliminated within the same tag. They will not if they are within separate tags.
 
 4. The sorting order of the bookmarks will be preserved in downloads.
+
+#
+
+### Following a friend's suggestion ...
+
+I have worked a Firefox extension for this script. (The script still remains independent of this extension.)
+
+Besides this, slight incompatibilities with php7+ in the original script have been fixed.
+
+The source of the extension is in folder ss-extension. This extension must be loaded and run in debug mode but see README.md.
