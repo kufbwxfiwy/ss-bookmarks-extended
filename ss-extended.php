@@ -23,6 +23,7 @@
 	$bEnableBackups			= false;										// backup you script (and bookmark data)
 	$bBackupFilename		= $sScriptName . '.bck.' . date('ymd');			// filename to backup to (using date('ymd') will increment daily)
 	$iViewPortWidth			= 600;											// viewport width in pixels (zooms in and eliminates white-space on iDevices)
+	$maxErrVer				= '6';							// the maximum php version in which the 'next()' error is present
 	/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 	/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 	/*!!!!!!!!!!!!!!!!!DO NOT EDIT ANYTHING BELOW THIS LINE!!!!!!!!!!!!!!!!!!!!!!!!*/
@@ -30,11 +31,11 @@
 	/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 	/*DATA-START*/
 	$fSize = 14;
-	$sortaccordingto = 'label';
+	$sortaccordingto = 'url';
 	$showurl = true;
-	$iNextIndex = 1;
+	$iNextIndex = 4;
 	$aBookmarks = array(
-		0 => array('label' => 'Example', 'url' => 'http://example.com', 'tags' => '', 'description' => 'Example Link', 'uref' => '1853099323'),
+		0 => array('label' => 'Example Domain', 'url' => 'http://example.com/', 'tags' => '', 'description' => 'Example Domain', 'uref' => '1831883622'),
 	);
 	$aRemove = array(
 		0 => 'http://',
@@ -222,6 +223,12 @@ if(isset($_GET["removelist"])) {
     $aRemove[] = $value;
     $aRemove = array_unique($aRemove);
     sort($aRemove);
+    $stop = 1;
+    $total = count($aRemove);
+    while ((($aRemove[0]{0} == "[") || ($aRemove[0]{0} == "(")) && ($stop < $total)){
+      $aRemove[] = array_shift($aRemove);
+      $stop++;
+    }
     $bReWriteScript = true;
   }
 }
@@ -292,11 +299,14 @@ if(isset($_GET["ureset"])) {
 		$checkdupvalue = '0'; $checkduptag = '0';
 		//eliminate duplicate entries
 		foreach ($aBookmarks as $key => $value) {
-		  foreach ($aRemove as $rrvalue) { //might as well eliminate unwanted urls at this point
-		    if (rtrim($rrvalue, '/') == rtrim($value['url'], '/')) {unset($aBookmarks[$key]); unset($aNewBookmark);}
-		  }
 		  //let's give a (hopefully) unique reference to the entries...
 		  if ($aBookmarks[$key]['uref'] == '') $aBookmarks[$key]['uref'] = mt_rand();
+		  foreach ($aRemove as $rrvalue) { //might as well eliminate unwanted urls at this point
+		    if (rtrim($rrvalue, '/') == rtrim($value['url'], '/')) {unset($aBookmarks[$key]); unset($aNewBookmark);}
+		    if (((substr($rrvalue, 0, 1) == "[") && (substr($rrvalue, -1) == "]")) || ((substr($rrvalue, 0, 1) == "(") && (substr($rrvalue, -1) == ")"))) {
+		      if (strstr($value['url'], trim($rrvalue, "[]()/"))) {unset($aBookmarks[$key]); unset($aNewBookmark);}
+		    }
+		  }
 		  if (($value['url'] == $checkdupvalue) && ($value['tags'] == $checkduptag)) unset($aBookmarks[$key]);
 		  else {$checkdupvalue = $value['url']; $checkduptag = $value['tags'];}
 		}
@@ -433,7 +443,8 @@ if(isset($_GET["ureset"])) {
 			color: #fff;
     			font: .875rem Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
     			font-weight: 300;   
-    			padding: 0 20px;
+    			padding: 0 18px;
+			padding-right: 10px;
 			text-align: center;
 			touch-action: manipulation;
 			-webkit-user-select: none;
@@ -470,7 +481,7 @@ if(isset($_GET["ureset"])) {
 ?>
 		window.onload = function(){
 			var sUrl = window.location.href;
-			if (sUrl.includes('&uid=')) window.location.href = sUrl.replace('&uid=', '&id='); //avoids problems with refreshes
+			if (sUrl.search('&uid=') > -1) window.location.href = sUrl.replace('&uid=', '&id='); //avoids problems with refreshes
 <?php
 		if ($inMenu1 || $inMenu2) echo "\t\t\t" . 'document.getElementById("aspacer").style.height = bdht + \'px\';' . "\n";
 		if ($inMenu2) echo "\t\t\t" . 'document.getElementById("loading").style.display = "none";' . "\n";
@@ -492,6 +503,7 @@ END;
 <body>
 <?php
 if ($inMain) {
+echo '<div style="height: 35px"></div>';
 echo '<ul style="text-align: center; line-height: 50%;"> <h3>' . $sPageTitle . '</h3><h4>Originally written by DM (<A HREF="https://github.com/dominicwa/ss-bookmarks">https://github.com/dominicwa/ss-bookmarks</A>)</h4>' . "\n";
 echo '<h4>Extended by KU (<A HREF="https://github.com/kufbwxfiwy/ss-bookmarks-extended">https://github.com/kufbwxfiwy/ss-bookmarks-extended</A>)</h4>' . "\n";
 echo '</ul>' . "\n";
@@ -509,7 +521,7 @@ echo '		<label style="margin-left: 10px; line-height: 1.813rem">View&nbsp;Tag:&n
 				echo "\t\t";
 			
 echo '</select>' . "\n";
-echo '		<input type="submit" name="menu_1" class="btn" value="Go to Menu" />' . "\n";
+echo '		<input type="submit" name="menu_1" class="btn" value="Go to Menu &#9658;" />' . "\n";
 echo '	</form>';
 	
 		echo "\n";
@@ -544,11 +556,13 @@ echo '	</form>';
 			echo "\t" . '<ul>' . "\n";
 		}
 		if (!$showurl) {
+		  reset($aCurrentTagBookmarks);
 		  foreach ($aCurrentTagBookmarks as $aCurrentTagBookmark) {
-			  $nextElm = current($aCurrentTagBookmarks); //the 'current' element is already one element ahead of the already fetched!
+			  if (PHP_VERSION > $maxErrVer) $nextElm = next($aCurrentTagBookmarks);
+			  else $nextElm = current($aCurrentTagBookmarks); //the 'current' element is already one element ahead of the already fetched!
 			  if ($nextElm) {
 				$nextRef = $nextElm['uref'];
-				next($aCurrentTagBookmarks); //then you MUST continue using next, otherwise you stick!
+				if (PHP_VERSION > $maxErrVer); else next($aCurrentTagBookmarks); //then you MUST continue using next, otherwise you stick!
 			  } else { //caters for the last element
 				end($aCurrentTagBookmarks);
 				prev($aCurrentTagBookmarks);
@@ -569,11 +583,13 @@ echo '	</form>';
 		}
 		else {
 		  $lastElement = end($aCurrentTagBookmarks);
+		  reset($aCurrentTagBookmarks);
 		  foreach ($aCurrentTagBookmarks as $aCurrentTagBookmark) {
-			  $nextElm = current($aCurrentTagBookmarks); //the 'current' element is already one element ahead of the already fetched!
+			  if (PHP_VERSION > $maxErrVer) $nextElm = next($aCurrentTagBookmarks);
+			  else $nextElm = current($aCurrentTagBookmarks); //the 'current' element is already one element ahead of the already fetched!
 			  if ($nextElm) {
 				$nextRef = $nextElm['uref'];
-				next($aCurrentTagBookmarks); //then you MUST continue using next, otherwise you stick!
+				if (PHP_VERSION > $maxErrVer); else next($aCurrentTagBookmarks); //then you MUST continue using next, otherwise you stick!
 			  } else { //caters for the last element
 				end($aCurrentTagBookmarks);
 				prev($aCurrentTagBookmarks);
@@ -757,12 +773,11 @@ echo <<<END
 											</td>
 										</tr>
 										<tr>
-											<td>
-											</td>
+											<td class="tinput">
+												<input type="submit" value="Delete Everything" name="delete">											</td>
 										</tr>
 										<tr>
-											<td class="tinput">
-												<input type="submit" value="Delete Everything" name="delete"><br><font style="FONT-WEIGHT: bold; COLOR: red">&#9888;Use this button with caution!</font>
+											<td class="tinput"><font style="FONT-WEIGHT: bold; COLOR: red">&#9888;Use these buttons with caution!</font><!-- br -->
 											</td>
 										</tr>
 									</table>
@@ -1164,7 +1179,7 @@ echo <<<END
 												</table>
 											</td>
 										</tr>
-										<tr style="HEIGHT: 7px">
+										<tr style="HEIGHT: 5px">
 											<td>
 											</td>
 										</tr>
@@ -1172,8 +1187,8 @@ echo <<<END
 											<td style="PADDING-RIGHT: 25px; PADDING-LEFT: 20px">
 												<label>Add to List:</label>
 												<div>
-													<label>URL:</label>
-													<input style="WIDTH: 100%" name="removeurl"><br>
+													<label>URL:&nbsp;&nbsp;</label><label><font style="font-size: 11pt; color: grey">[Use brackets to denominate domains.]</font></label>
+													<input style="MARGIN-TOP: 1px; WIDTH: 100%" name="removeurl"><br>
 													<input type="submit" style="MARGIN-TOP: 4px" value="Insert" name="removelist">
 												</div>
 											</td>
