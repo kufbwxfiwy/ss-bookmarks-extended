@@ -1,3 +1,5 @@
+## SS Bookmarks Extended Firefox Extension
+
 You can install this Firefox browser extension either by using the
 'Debug Add-ons' feature in your browser and using the files found in
 directory SSBookmarksExtended_Files here or else by choosing 'Install
