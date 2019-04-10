@@ -944,7 +944,7 @@ if (isset($_GET['downloadbookmarksall'])) {
 		usort($aBookmarks, "cmp_");
 	}
 	foreach ($aBookmarks as $value) {
-		$sNewData .= '<DT><A HREF="' . $value['url'] . '">' . $value['label'] . '</A>' . ($value['description'] ? '<DD>' . $value['description']:'') . "\n";
+		$sNewData .= '<DT><A HREF="' . $value['url'] . '" TAG="' . $value['tags'] . '">' . $value['label'] . '</A>' . ($value['description'] ? '<DD>' . $value['description']:'') . "\n";
 	}
 	$lenAfterNewData = strlen($sNewData);
 	if($lenAfterNewData > $lenBeforeNewData) $outputzip = true;
