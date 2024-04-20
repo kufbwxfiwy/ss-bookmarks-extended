@@ -218,14 +218,14 @@ if(isset($_GET["removelist"])) {
   $value = rtrim($value, '\\'); //was breaking the script!
   $value = rtrim($value, '/');
   if ($value[(strlen($value) - 1)] == '\\') goto lp1;
-  if ($value{strlen($value)-1} == ':') $value .= '//';
+  if ($value[(strlen($value)-1)] == ':') $value .= '//';
   if ($value != '') {
     $aRemove[] = $value;
     $aRemove = array_unique($aRemove);
     sort($aRemove);
     $stop = 1;
     $total = count($aRemove);
-    while ((($aRemove[0]{0} == "[") || ($aRemove[0]{0} == "(")) && ($stop < $total)){
+    while ((($aRemove[0][0] == "[") || ($aRemove[0][0] == "(")) && ($stop < $total)){
       $aRemove[] = array_shift($aRemove);
       $stop++;
     }
